@@ -103,7 +103,7 @@
             var data;
             $.ajax({
                 dataType: "json",
-                url: location.host + location.pathname + '/shultimes',
+                url: location.protocol + '://' + location.host + location.pathname + 'shultimes',
                 data: data,
                 success: function (result) {
                     $(button).toggleClass('loading');
