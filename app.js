@@ -17,10 +17,12 @@ app.get('/shultimes', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     var yeshurn = rp('https://www.adasyeshurun.com/').promise();
     var mikor = rp('https://www.mikorhachaim.org/').promise();
-    Promise.all([yeshurn, mikor]).then(function(values) {
+    var chodorov = rp('https://www.khaloyc.org/').promise();
+    Promise.all([yeshurn, mikor, chodorov]).then(function(values) {
         var response = {};
         response.yeshurn = shul.getTimes(values[0]);
         response.mikor = shul.getTimes(values[1]); 
+        response.chodorov = shul.getTimes(values[2]);
         
         res.send(JSON.stringify(response, null, 2));
 
