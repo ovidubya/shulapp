@@ -60,19 +60,23 @@
             border-left-color: #f0ad4e;
             border-left-width: .25rem;
             border-radius: .25rem;
+            cursor: pointer;
         }
-
+        .black:hover {
+            border-left-color: blue;
+        }
         .logo {
             height: 5rem;
-            width: 5rem;
+            max-width: 5rem;
+            width: auto;
         }
     </style>
 </head>
 
 <body>
-    <h1>Chicago Minyan Schedule</h1>
+    <h1>Chicago Shul Schedule</h1>
     <p>Source code <a style="color:blue;" target="_blank" href="https://github.com/ovidubya/shulapp">here</a></p>
-    <button onclick="generateEventAndTimes()" id="request-button" class="btn btn-primary">Get shul times</button>
+    <button onclick="generateEventAndTimes()" id="request-button" class="btn btn-primary">Todays Schedule</button>
     <div class="lds-facebook">
         <div></div>
         <div></div>
@@ -103,7 +107,7 @@
             var data;
             $.ajax({
                 dataType: "json",
-                url: 'https://whispering-wave-69392.herokuapp.com/shultimes',
+                url: 'http://localhost:5000/shultimes',//'https://whispering-wave-69392.herokuapp.com/shultimes',
                 data: data,
                 success: function (result) {
                     $(button).toggleClass('loading');
