@@ -159,7 +159,7 @@ function readCookie(name) {
 }
 
 function eraseCookie(name) {
-    createCookie(name, "", -1);
+    createCookie(name, "", -1, 'whispering-wave-69392.herokuapp.com');
 }
 
 function saveSettings() {
