@@ -153,10 +153,10 @@
         var list = document.querySelector('.list');
         requestButton.addEventListener('click', function () {
             list.innerHTML = '';
-            $(this).toggleClass('loading');
             var button = $(this);
             var data = readCookie('listOfShuls');
             if (!!data) {
+                $(this).toggleClass('loading');
                 data = readCookie('listOfShuls').split(',');
                 $.ajax({
                     type: "POST",
