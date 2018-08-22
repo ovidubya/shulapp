@@ -160,7 +160,7 @@
                 data = readCookie('listOfShuls').split(',');
                 $.ajax({
                     type: "POST",
-                    url: 'http://localhost:5000/shultimes',
+                    url: 'https://whispering-wave-69392.herokuapp.com/shultimes',
                     data: JSON.stringify(data),
                     success: function(result) {
                         $(button).toggleClass('loading');
