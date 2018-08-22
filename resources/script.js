@@ -169,6 +169,6 @@ function saveSettings() {
         arr.push(el.id);
     });
     if (arr.length > 0) {
-        createCookie('listOfShuls', arr);
+        createCookie('listOfShuls', arr, 999999, 'whispering-wave-69392.herokuapp.com');
     }
 }
