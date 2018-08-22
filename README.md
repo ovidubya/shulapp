@@ -12,3 +12,6 @@ Get's the events/minyanim for chicago shuls.
 
 ## Chodorov
 <img height='100px' src='resources/chodorov.jpg'>
+
+## Agudah
+<img height='100px' src='resources/agudah.jpg'>
