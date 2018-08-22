@@ -47,10 +47,6 @@ app.post('/shultimes', function (req, res) {
         handlePromises.push(rp('https://www.khaloyc.org/').promise());
         index++;
     }
-    if(clientRequest.includes('agudah')) {
-        handlePromises.push(rp('https://www.aywrp.org/').promise());
-        index++;
-    }
     Promise.all(handlePromises).then(function(values) {
         var response = {};
         if(clientRequest.includes('yeshurn')) {
@@ -61,9 +57,6 @@ app.post('/shultimes', function (req, res) {
         }
         if(clientRequest.includes('chodorov')) {
             response.chodorov =  shul.getTimes(values[index]);
-        }
-        if(clientRequest.includes('agudah')) {
-            response.agudah =  shul.getTimes(values[index]);
         }
         res.send(JSON.stringify(response, null, 2));
     });
