@@ -8,9 +8,12 @@
     <title>Ezra's shul scheduler</title>
     <link rel="stylesheet" href="css/loader.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
+    <!-- Bootstrap tooltips -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <style>
         body {
@@ -62,25 +65,72 @@
             border-radius: .25rem;
             cursor: pointer;
         }
+
         .black:hover {
             border-left-color: blue;
         }
+
         .logo {
             height: 5rem;
             max-width: 5rem;
             width: auto;
+        }
+
+        i.material-icons {
+            position: relative;
+            top: 0.3rem;
+            left: 0.2rem;
+        }
+
+        .custom-control {
+            display: inline !important;
         }
     </style>
 </head>
 
 <body>
     <h1>Chicago Shul Schedule</h1>
-    <p>Source code <a style="color:blue;" target="_blank" href="https://github.com/ovidubya/shulapp">here</a></p>
+    <p>Source code
+        <a style="color:blue;" target="_blank" href="https://github.com/ovidubya/shulapp">here</a>
+    </p>
+    <button style="padding-top: 0.5rem;padding-bottom: 0.6rem;" type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">Settings
+        <i class="material-icons">settings</i>
+    </button>
+    <br>
     <button onclick="generateEventAndTimes()" id="request-button" class="btn btn-primary">Todays Schedule</button>
-    <div class="lds-facebook">
-        <div></div>
-        <div></div>
-        <div></div>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 style="color: black" class="modal-title" id="exampleModalLongTitle">Select shuls</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div style="color: black" class="modal-body">
+                    <div class="custom-control custom-checkbox">
+                        <input name="shulselected" type="checkbox" class="custom-control-input" id="yeshurn">
+                        <label class="custom-control-label" for="yeshurn">Yeshurn</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input name="shulselected" type="checkbox" class="custom-control-input" id="mikor">
+                        <label class="custom-control-label" for="mikor">Mikor</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input name="shulselected" type="checkbox" class="custom-control-input" id="chodorov">
+                        <label class="custom-control-label" for="chodorov">chodorov</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button onclick="saveSettings()" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="container-fluid">
@@ -97,6 +147,7 @@
         </div>
     </div>
 
+    <script src="script.js"></script>
     <script>
         var requestButton = document.getElementById('request-button');
         var list = document.querySelector('.list');
@@ -104,19 +155,50 @@
             list.innerHTML = '';
             $(this).toggleClass('loading');
             var button = $(this);
-            var data;
-            $.ajax({
-                dataType: "json",
-                url: 'https://whispering-wave-69392.herokuapp.com/shultimes',
-                data: data,
-                success: function (result) {
-                    $(button).toggleClass('loading');
-                    generateEventAndTimes(result);
-                }
-            });
+            var data = readCookie('listOfShuls');
+            if (!!data) {
+                data = readCookie('listOfShuls').split(',');
+                $.ajax({
+                    type: "POST",
+                    url: 'http://localhost:5000/shultimes',
+                    data: JSON.stringify(data),
+                    success: function(result) {
+                        $(button).toggleClass('loading');
+                        generateEventAndTimes(result);
+                    },
+                    dataType: 'json',
+                    contentType: 'application/json'
+                });
+            } else {
+                alert('Please select a list of shuls');
+            }
+            // $.ajax({
+            //     dataType: "json",
+            //     url: 'https://whispering-wave-69392.herokuapp.com/shultimes',
+            //     data: data,
+            //     success: function (result) {
+            //         $(button).toggleClass('loading');
+            //         generateEventAndTimes(result);
+            //     }
+            // });
+
         });
+
+        if (readCookie('listOfShuls')) {
+            var cookieValues = readCookie('listOfShuls');
+            cookieValues = cookieValues.split(',');
+            for (var i = 0; i < cookieValues.length; i++) {
+                var checkbox = document.querySelector('#' + cookieValues[i]);
+                if (!!checkbox) {
+                    checkbox.checked = true;
+                }
+            }
+        } else {
+            document.querySelectorAll('input[type=checkbox]').forEach(function (element) {
+                element.checked = true;
+            });
+        }
     </script>
-    <script src="script.js"></script>
 </body>
 
 </html>
