@@ -9,3 +9,6 @@ Get's the events/minyanim for chicago shuls.
 
 ## Mikor
 <img height='100px' src='resources/mikor.jpg'>
+
+## Chodorov
+<img height='100px' src='resources/chodorov.jpg'>
